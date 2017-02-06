@@ -11,21 +11,37 @@
  *
  */
 module.exports = function(gulp, plugins, growl) {
-	var server = plugins.livereload();
-	gulp.task('watch:api', function() {
-		// Watch Style files
-		return gulp.watch('api/**/*', ['syncAssets'])
-				.on('change', function(file) {
-					server.changed(file.path);
-				});
+	var gulpsync = plugins.sync(gulp);
+	gulp.task('watch:typescript', function() {
+	    return plugins.watch('assets/app/**/*.ts', function (file) {
+	    	if (file.event == 'change') {
+	    		gulp.start('typescript:dev')
+	    	} else {
+	    		gulp.start(gulpsync.sync(['clean:js_ts', 'typescript:dev']));
+	    	}
+    		
+	    })
 	});
 	
-	gulp.task('watch:assets', function() {
-		// Watch assets
-		return gulp.watch(['assets/**/*', 'tasks/pipeline.js'], ['syncAssets'])
-				.on('change', function(file) {
-					server.changed(file.path);
-				});
+	gulp.task('watch:less', function() {
+	    return plugins.watch('assets/**/*.less', function () {
+    		gulp.start('less:dev')
+	    })
 	});
 
+	gulp.task('watch:html', function() {
+	    return plugins.watch('assets/app/**/*.html', function () {
+    		gulp.start(gulpsync.sync(['clean:html', 'copy:dev']))
+	    })
+	});
+
+	gulp.task('watch:images', function(file) {
+	    return plugins.watch('assets/app/images/', function () {
+	    	if (file.event == 'change') {
+	    		gulp.start('images')
+	    	} else {
+	    		gulp.start(gulpsync.sync(['clean:images', 'copy:dev']));
+	    	}
+	    })
+	});
 };

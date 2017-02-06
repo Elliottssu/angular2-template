@@ -11,14 +11,14 @@
 module.exports = function(gulp, plugins, growl) {
 
 	gulp.task('less:dev', function() {
-		return gulp.src('assets/styles/importer.less')
+		return gulp.src('assets/less/main.less')
 				.pipe(
 					plugins.less({
 						expand: true,
 						ext: '.css'
 					})
 				)
-				.pipe(gulp.dest('.tmp/public/styles/'))
+				.pipe(gulp.dest('.tmp/public/css/'))
 				.pipe(plugins.if(growl, plugins.notify({ message: 'less dev task complete' })));
 	});
 };

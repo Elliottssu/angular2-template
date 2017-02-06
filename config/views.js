@@ -30,7 +30,20 @@ module.exports.views = {
   *                                                                           *
   ****************************************************************************/
 
-  engine: 'ejs',
+   engine: {
+       'name': 'swig',
+       'ext': 'html',
+       fn: function(pathName, locals, cb) {
+           var swig = require('swig')
+           swig.setDefaults({
+               'cache': false, 
+               'loader': swig.loaders.fs('./views')
+           })
+           return swig.renderFile(pathName, locals, cb);
+       }
+
+   },
+
   
 
   /****************************************************************************
@@ -57,7 +70,7 @@ module.exports.views = {
   *                                                                           *
   ****************************************************************************/
 
-  layout: 'layout'
+  layout: false
 
   /****************************************************************************
   *                                                                           *
