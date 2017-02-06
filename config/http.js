@@ -21,7 +21,24 @@ module.exports.http = {
   *                                                                           *
   ****************************************************************************/
 
-  // middleware: {
+  middleware: {
+    angular: function(req, res, next) {
+        var static = ['/js', '/css', '/fonts', '/images', '/app', '/node_modules'];
+        for (var str of static) {
+            if (req.path.indexOf(str) >= 0) {
+                next();
+                return;
+            }
+        }
+
+        if (req.path.indexOf('api') >= 0) {
+            next();
+            return;
+
+        } else { 
+            return res.sendfile('views/index.html');
+        }
+    },
 
   /***************************************************************************
   *                                                                          *
@@ -31,6 +48,7 @@ module.exports.http = {
   ***************************************************************************/
 
     // order: [
+    //   'angular', 
     //   'startRequestTimer',
     //   'cookieParser',
     //   'session',
@@ -57,7 +75,7 @@ module.exports.http = {
     // myRequestLogger: function (req, res, next) {
     //     console.log("Requested :: ", req.method, req.url);
     //     return next();
-    // }
+    }
 
 
   /***************************************************************************
