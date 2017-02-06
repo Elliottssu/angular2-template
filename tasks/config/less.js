@@ -8,6 +8,7 @@
  * dependencies, mixins, variables, resets, etc. before other stylesheets)
  *
  */
+var handleErrors = require('../util/handleErrors');
 module.exports = function(gulp, plugins, growl) {
 
 	gulp.task('less:dev', function() {
@@ -17,7 +18,7 @@ module.exports = function(gulp, plugins, growl) {
 						expand: true,
 						ext: '.css'
 					})
-				)
+				).on('error',handleErrors)
 				.pipe(gulp.dest('.tmp/public/css/'))
 				.pipe(plugins.if(growl, plugins.notify({ message: 'less dev task complete' })));
 	});

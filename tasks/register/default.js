@@ -4,9 +4,8 @@ module.exports = function (gulp, plugins) {
 			'clean:dev',
 			['typescript:dev', 'images', 'less:dev'],
 			'copy:dev',
+      // 'linkAssets',
 			['watch:typescript', 'watch:less', 'watch:html', 'watch:images', 'browserSync'],
-			// 'linkAssets',
-			// ['watch:api', 'watch:assets'],
 			cb
 		);
 	});
